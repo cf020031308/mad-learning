@@ -6,6 +6,13 @@
 
 It is a flexible learning paradigm that can be applied to unary situations (Image Recognition), binary situations (Link Prediction) and ternary situations (Knowledge Graphs).
 
+Currently, MAD Learning achieves SotA performance on these leaderboads:
+
+* [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/memory-associated-differential-learning/link-prediction-on-cora)](https://paperswithcode.com/sota/link-prediction-on-cora?p=memory-associated-differential-learning)
+* [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/memory-associated-differential-learning/link-prediction-on-citeseer)](https://paperswithcode.com/sota/link-prediction-on-citeseer?p=memory-associated-differential-learning)
+* [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/memory-associated-differential-learning/link-prediction-on-pubmed)](https://paperswithcode.com/sota/link-prediction-on-pubmed?p=memory-associated-differential-learning)
+* [obgl-ddi](https://ogb.stanford.edu/docs/leader_linkprop/#ogbl-ddi)
+
 ## Reproducibility
 
 ### Weekday Prediction Challenge
