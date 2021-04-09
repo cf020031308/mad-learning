@@ -107,6 +107,9 @@ test_mask = graph.ndata['test_mask']
 n_nodes = graph.num_nodes()
 n_features = node_features.shape[1]
 n_labels = int(node_labels.max().item() + 1)
+flt = src <= dst
+src = src[flt]
+dst = dst[flt]
 
 adj = gpu(torch.zeros((n_nodes, n_nodes), dtype=bool))
 adj[src, dst] = 1
@@ -130,9 +133,17 @@ else:
     val_dst = gpu(dst[perm[:val_num]])
     test_src = gpu(src[perm[val_num:val_num + test_num]])
     test_dst = gpu(dst[perm[val_num:val_num + test_num]])
+    train_src, train_dst = (
+        torch.cat((train_src, train_dst)),
+        torch.cat((train_dst, train_src)))
+    val_src, val_dst = (
+        torch.cat((val_src, val_dst)),
+        torch.cat((val_dst, val_src)))
+    test_src, test_dst = (
+        torch.cat((test_src, test_dst)),
+        torch.cat((test_dst, test_src)))
     mem = gpu(torch.zeros((n_nodes, n_nodes), dtype=bool))
     mem[train_src, train_dst] = 1
-    mem[train_dst, train_src] = 1
 
 total_aucs = []
 total_aps = []
@@ -155,13 +166,13 @@ for run in range(10):
     best_accs = [0, 0]
     for epoch in range(1, total_epoch + 1):
         mad.train()
-        opt.zero_grad()
         for perm in DataLoader(
                 range(train_src.shape[0]), batch_size=1024, shuffle=True):
+            opt.zero_grad()
             p_pos = mad(train_src[perm], train_dst[perm])
             neg_src = gpu(torch.randint(0, n_nodes, (perm.shape[0], )))
             neg_dst = gpu(torch.randint(0, n_nodes, (perm.shape[0], )))
-            idx = ~(adj[neg_src, neg_dst])
+            idx = ~(mem[neg_src, neg_dst])
             p_neg = mad(neg_src[idx], neg_dst[idx])
             loss = (
                 -torch.log(1e-5 + 1 - p_neg).mean()
