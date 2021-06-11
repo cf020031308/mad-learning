@@ -1,5 +1,3 @@
-**IMPORTANT: Due to some implementation mistakes described in [this issue](https://github.com/cf020031308/mad-learning/issues/1) (many thanks to @pminervini), previous scores on Cora, Citeseer and Pubmed in my paper are wrong. I will correct those content as soon as possible.**
-
 # Memory-Associated Differential Learning
 
 ![Architecture](mad-flow.png)
